@@ -1,0 +1,191 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="realworld-app-init-1" author="Volodymyr Oliinyk">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="user"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="created" type="datetime"/>
+            <column name="last_updated" type="datetime"/>
+
+            <column name="username" type="VARCHAR(128)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="email" type="VARCHAR(128)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="password" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="bio" type="VARCHAR(128)"/>
+            <column name="image_url" type="VARCHAR(128)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="realworld-app-init-2" author="Volodymyr Oliinyk">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="article"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="article">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="author_id" type="BIGINT"/>
+
+            <column name="created" type="datetime"/>
+            <column name="last_updated" type="datetime"/>
+
+            <column name="title" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="VARCHAR(128)"/>
+
+            <column name="slug" type="VARCHAR(128)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
+            <column name="body" type="VARCHAR(512)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="article" baseColumnNames="author_id"
+                                 constraintName="article_user_id_fk" referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="realworld-app-init-3" author="Volodymyr Oliinyk">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="comment"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="comment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="author_id" type="BIGINT"/>
+            <column name="article_id" type="BIGINT"/>
+            <column name="created" type="datetime"/>
+            <column name="last_updated" type="datetime"/>
+            <column name="body" type="VARCHAR(512)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="comment" baseColumnNames="author_id"
+                                 constraintName="comment_user_id_fk" referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="comment" baseColumnNames="article_id"
+                                 constraintName="comment_article_id_fk" referencedTableName="article"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="realworld-app-init-4" author="Volodymyr Oliinyk">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="favorite"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="favorite">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="created" type="datetime"/>
+            <column name="user_id" type="BIGINT"/>
+            <column name="article_id" type="BIGINT"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="favorite" baseColumnNames="user_id"
+                                 constraintName="favorite_article_user_id_fk" referencedTableName="user"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="favorite" baseColumnNames="article_id"
+                                 constraintName="favorite_article_id_fk" referencedTableName="article"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="realworld-app-init-5" author="Volodymyr Oliinyk">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="follower"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="follower">
+            <column autoIncrement="true" name="follower_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column autoIncrement="true" name="followee_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="created" type="datetime"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="realworld-app-init-6" author="Volodymyr Oliinyk">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="tag"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="tag">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="created" type="datetime"/>
+
+            <column name="name" type="VARCHAR(32)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="realworld-app-init-7" author="Volodymyr Oliinyk">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="article_tag"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="article_tag">
+            <column autoIncrement="true" name="article_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column autoIncrement="true" name="tag_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="article_tag" baseColumnNames="article_id"
+                                 constraintName="article_tag_article_id_fk" referencedTableName="article"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="article_tag" baseColumnNames="tag_id"
+                                 constraintName="article_tag_tag_id_fk" referencedTableName="tag"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
