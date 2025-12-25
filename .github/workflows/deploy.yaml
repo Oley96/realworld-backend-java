@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: java-realworld-backend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,10 +21,22 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Retrieve Version and set ENV var
+        id: get_version
+        run: echo VERSION=$(./gradlew -q printVersion) >> $GITHUB_ENV
+
       - name: Build and Test with Gradle
         run: ./gradlew clean test
 
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-
-
-
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ env.VERSION }}

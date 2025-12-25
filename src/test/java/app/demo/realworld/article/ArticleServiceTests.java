@@ -50,7 +50,7 @@ public class ArticleServiceTests {
         //assert
         assertTrue(result.isPresent());
         assertEquals(expected, result.get());
-        verify(articleRepository, times(2)).findArticleIdBySlug(slug);
+        verify(articleRepository, times(1)).findArticleIdBySlug(slug);
     }
 
     @Test
