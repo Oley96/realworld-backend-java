@@ -7,11 +7,6 @@ plugins {
 group = 'app.demo'
 version = '0.0.1'
 
-tasks.register('printVersion') {
-    doLast {
-        println project.version
-    }
-}
 
 jar {
     enabled = false

@@ -7,8 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: java-realworld-backend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,7 +21,7 @@ jobs:
 
       - name: Retrieve Version and set ENV var
         id: get_version
-        run: echo VERSION=$(./gradlew -q printVersion) >> $GITHUB_ENV
+        run: echo VERSION=$(grep "version =" build.gradle | awk -F "'" '{print $2}') >> $GITHUB_ENV
 
       - name: Build and Test with Gradle
         run: ./gradlew clean test
@@ -39,4 +37,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ env.VERSION }}
+          tags: |
+            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ env.VERSION }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest

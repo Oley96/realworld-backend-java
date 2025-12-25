@@ -7,7 +7,7 @@ RUN gradle dependencies --no-daemon
 
 COPY src ./src
 
-RUN gradle clean build --no-daemon
+RUN gradle clean build -x test --no-daemon
 
 FROM eclipse-temurin:21-jre
 WORKDIR /opt/realworld
