@@ -41,7 +41,7 @@ jobs:
             ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ env.VERSION }}
             ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
 
-      - name: Use PEM file for SSH connection
+      - name: Deploy
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_USER: ${{ secrets.SSH_USER }}
@@ -49,4 +49,9 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > key.pem
           chmod 600 key.pem
-          ssh -i key.pem -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'echo "Successfully connected"'
+          ssh -i key.pem -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST
+          echo "Successfully connected"
+          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker compose pull back-end
+          docker compose stop back-end && docker compose up -d back-end
+          echo "Deploy done!"
