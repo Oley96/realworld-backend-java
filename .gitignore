@@ -37,5 +37,5 @@ out/
 .vscode/
 
 
-Docker-compose.yml
+Docker-compose.hidden.yml
 README.md

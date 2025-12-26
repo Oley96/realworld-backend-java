@@ -26,17 +26,27 @@ jobs:
       - name: Build and Test with Gradle
         run: ./gradlew clean test
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+#      - name: Login to Docker Hub
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+#          password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Build and Push Docker Image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ env.VERSION }}
-            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
+#      - name: Build and Push Docker Image
+#        uses: docker/build-push-action@v6
+#        with:
+#          context: .
+#          push: true
+#          tags: |
+#            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:${{ env.VERSION }}
+#            ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
+
+      - name: Use PEM file for SSH connection
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_USER: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > key.pem
+          chmod 600 key.pem
+          ssh -i key.pem -o StrictHostKeyChecking=no $SSH_USER@$SSH_PRIVATE_KEY 'echo "Successfully connected"'

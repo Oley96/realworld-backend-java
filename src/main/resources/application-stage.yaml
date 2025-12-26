@@ -1,0 +1,20 @@
+server:
+  port: 1748
+
+spring:
+  datasource:
+    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME}
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?connectTimeout=5000&amp;socketTimeout=30000
+    hikari:
+      maximum-pool-size: 5
+      pool-name: pool
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+
+
+image:
+  default:
+    url: http://${STAGE_HOST}:${server.port}/default.jpg
