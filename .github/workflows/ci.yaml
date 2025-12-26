@@ -5,6 +5,9 @@ on:
 
 jobs:
   build-test:
+    permissions:
+      pull-requests: write
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -40,7 +43,7 @@ jobs:
               ? `✅ UNIT TESTS PASSED`
               : `🔴 UNIT TESTS FAILED`
             
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
