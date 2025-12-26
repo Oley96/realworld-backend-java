@@ -49,4 +49,4 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > key.pem
           chmod 600 key.pem
-          ssh -i key.pem -o StrictHostKeyChecking=no $SSH_USER@$SSH_PRIVATE_KEY 'echo "Successfully connected"'
+          ssh -i key.pem -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'echo "Successfully connected"'
