@@ -26,7 +26,7 @@ import static org.mockito.Mockito.*;
  * @since 2025-09-27
  */
 @ExtendWith(MockitoExtension.class)
-public class ArticleServiceTests {
+class ArticleServiceTests {
 
     @InjectMocks
     private ArticleService underTest;
