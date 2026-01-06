@@ -26,6 +26,11 @@ public class LoginValidator implements Validator {
     @Override
     public void validate(@NonNull Object target, @NonNull Errors errors) {
         LoginRequest request = (LoginRequest) target;
+
+        if (request.password() == null || request.email() == null) {
+            return;
+        }
+
         Optional<User> optionalUser = userService.getByEmail(request.email());
         if (optionalUser.isEmpty()) {
             errors.rejectValue("email", null, "invalid email or password");
