@@ -3,6 +3,7 @@ package app.demo.realworld.model.dto;
 import app.demo.realworld.model.db.Article;
 import app.demo.realworld.model.db.Tag;
 import app.demo.realworld.model.db.User;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,13 @@ public class ArticleDto {
     private String description;
     private String body;
     private List<String> tagList;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
     private Instant createdAt;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
     private Instant updatedAt;
+
     private Boolean favorited = false;
     private Long favoritesCount = 0L;
     private ProfileDto author;
