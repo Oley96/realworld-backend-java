@@ -103,7 +103,7 @@ The API implements the Realworld specification including:
 - `POST /api/profiles/{username}/follow` - Follow user
 - And more...
 
-See the [Realworld spec](https://realworld.io/docs/specs/backend-specs/endpoints) for complete API documentation.
+See the [Realworld spec](https://docs.realworld.show/specifications/backend/endpoints/) for complete API documentation.
 
 ## CI/CD
 
