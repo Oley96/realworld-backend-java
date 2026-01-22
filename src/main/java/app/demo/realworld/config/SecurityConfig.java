@@ -48,8 +48,9 @@ public class SecurityConfig {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers("/api/users/login", "/api/profiles/*", "/api/tags").permitAll()
+                        authorize.requestMatchers("/api/users/login", "/api/tags").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/profiles/*").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/articles/feed").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/articles/*").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/articles").permitAll()
