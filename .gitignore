@@ -36,5 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
+.env
 
 Docker-compose.hidden.yml

@@ -18,8 +18,3 @@ spring:
 image:
   default:
     url: http://localhost:${server.port}/default.jpg
-
-
-jwt:
-  secret: ${JWT_SECRET_KEY:"671491AE98362741F722202EED3288E8FF2508B35315ADBF75EEB3195A926B40"}
-  audience: ${JWT_SECRET_AUDIENCE:"api"}

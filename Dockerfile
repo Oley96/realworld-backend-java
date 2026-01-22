@@ -3,7 +3,7 @@ WORKDIR /opt/realworld
 
 COPY build.gradle settings.gradle ./
 COPY gradle ./gradle
-RUN gradle dependencies --no-daemon
+RUN --mount=type=cache,target=/root/.gradle gradle dependencies --no-daemon
 
 COPY src ./src
 
