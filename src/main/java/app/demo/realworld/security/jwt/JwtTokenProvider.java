@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -14,11 +15,15 @@ import java.util.Date;
 @Component
 @Slf4j
 public class JwtTokenProvider {
-    private static final String SECRET_KEY_BASE64 = "671491AE98362741F722202EED3288E8FF2508B35315ADBF75EEB3195A926B40";
-    private static final String AUDIENCE_KEY = "api";
+
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.audience}")
+    private String audienceKey;
 
     private Key getSecretKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY_BASE64);
+        byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -30,7 +35,7 @@ public class JwtTokenProvider {
                 .setSubject(subject)
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(validity))
-                .setAudience(AUDIENCE_KEY)
+                .setAudience(audienceKey)
                 .signWith(getSecretKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -59,7 +64,7 @@ public class JwtTokenProvider {
         if (claims.getSubject() == null || claims.getSubject().isEmpty()) {
             throw new JwtException("Invalid subject (sub) claim");
         }
-        if (!AUDIENCE_KEY.equals(claims.getAudience())) {
+        if (!audienceKey.equals(claims.getAudience())) {
             throw new JwtException("Invalid audience (aud) claim");
         }
         return parsedToken;

@@ -9,7 +9,12 @@ spring:
       hibernate:
         enable_lazy_load_no_trans: true
         format_sql: true
+    open-in-view: false
   jackson:
     default-property-inclusion: non_null
     deserialization:
       unwrap-root-value: true
+
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  audience: ${JWT_SECRET_AUDIENCE}
