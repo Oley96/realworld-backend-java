@@ -14,7 +14,7 @@ Spring Boot implementation of the [Realworld](https://realworld.io/) Conduit spe
 ## Tech Stack
 
 - **Java 21** with Spring Boot 3.3.5
-- **PostgreSQL** database with **Liquibase** migrations
+- **PostgreSQL** with **Liquibase** migrations
 - **JWT** authentication (jjwt library)
 - **JPA/Hibernate** for data persistence
 - **Lombok** for reducing boilerplate
@@ -25,39 +25,45 @@ Spring Boot implementation of the [Realworld](https://realworld.io/) Conduit spe
 ### Prerequisites
 
 - Java 21
-- Docker and Docker Compose (for containerized deployment)
+- Docker and Docker Compose
 
-### Local Development
+### Quick Start
+
+#### Option 1: Database in Docker, app via Gradle
 
 ```bash
-# Build the project
-./gradlew clean build
+# 1. Start postgres with docker compose
+docker-compose up -d database # database would be started on localhost:5437
 
-# Run tests
-./gradlew test
-
-# Run the application
-./gradlew bootRun
+# 2. Run the application with the local profile
+./gradlew clean bootRun --args='--spring.profiles.active=local'
 ```
 
-The application will be available at `http://localhost:1748`
+The application will be available at `http://localhost:1748`.
 
-### Docker Compose
+#### Option 2: Database and app via Docker Compose
 
 ```bash
 docker-compose up -d
 ```
 
 This starts:
+
 - **Backend API**: `http://localhost:1748`
 - **PostgreSQL Database**: `localhost:5437`
 
-### Environment Configuration
+### Tests
+
+```bash
+./gradlew clean test
+```
+
+## Environment Configuration
 
 Application profiles:
+
 - `local`: Local development environment
 - `stage`: Staging environment
-
 
 ## Project Structure
 
@@ -74,22 +80,12 @@ src/main/java/app/demo/realworld/
 └── validation/       # Custom validators
 ```
 
-### Key Components
+## Key Components
 
 - **Controllers**: `ArticleController`, `UserController`, `ProfileController`, `CommentController`, `TagController`
 - **Services**: Business logic for articles, users, comments, tags, followers, favorites
 - **Security**: JWT token provider, authentication filter, user details service
 - **Database**: JPA entities with Liquibase changelogs in `src/main/resources/db/changelog/`
-
-## Testing
-
-Run the full test suite:
-
-```bash
-./gradlew test
-```
-
-Test results are reported in JUnit XML format. The CI/CD pipeline automatically runs tests on pull requests and reports results.
 
 ## API Endpoints
 
