@@ -83,6 +83,12 @@ public class ArticleService {
 
     public ArticleDto updateArticle(String slug, UpdateArticleRequest request, User user) {
         Article savedArticle = articleRepository.findBySlug(slug)
+                .filter(i -> {
+                    if (!user.getId().equals(i.getAuthorId())) {
+                        throw new AccessDeniedException("You can update only own articles");
+                    }
+                    return true;
+                })
                 .map(article -> {
                     handleSlugUpdate(request.title(), article);
                     article.setTitle(request.title());
