@@ -32,7 +32,7 @@ public class CommentService {
         var userid = optionalUser.map(User::getId).orElse(null);
         return articleService.getArticleIdBySlug(slug)
                 .map(articleId -> commentRepository.findCommentsDtoByFollowerIdAndArticleId(userid, articleId))
-                .orElse(Collections.emptyList());
+                .orElseThrow(() -> new EntityNotFoundException("Article does not exist"));
     }
 
     public void deleteCommentFromArticle(Long userId, String slug, Long commentId) {
