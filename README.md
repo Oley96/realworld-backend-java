@@ -29,7 +29,13 @@ Spring Boot implementation of the [Realworld](https://realworld.io/) Conduit spe
 
 ### Quick Start
 
-#### Option 1: Database in Docker, app via Gradle
+#### Before run
+```bash
+# 1. Create .env and copy content from .env.example
+cp .env.example .env
+```
+
+#### Run Option 1: Database in Docker, app via Gradle
 
 ```bash
 # 1. Start postgres with docker compose
@@ -41,7 +47,7 @@ docker-compose up -d database # database would be started on localhost:5437
 
 The application will be available at `http://localhost:1748`.
 
-#### Option 2: Database and app via Docker Compose
+#### Run Option 2: Database and app via Docker Compose
 
 ```bash
 docker-compose up -d
