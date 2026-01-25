@@ -1,5 +1,6 @@
 package app.demo.realworld.controller;
 
+import app.demo.realworld.exception.ValidationException;
 import app.demo.realworld.model.db.User;
 import app.demo.realworld.model.dto.UserDto;
 import app.demo.realworld.model.request.LoginRequest;
@@ -23,6 +24,9 @@ public class UserController {
 
     @PostMapping("/users")
     public AuthUserResponse registerUser(@Valid @RequestBody RegistrationRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException(bindingResult);
+        }
         UserDto userDto = authService.registerUser(request, bindingResult);
 
         return AuthUserResponse.of(userDto);
@@ -30,6 +34,9 @@ public class UserController {
 
     @PostMapping("/users/login")
     public AuthUserResponse loginUser(@Valid @RequestBody LoginRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException(bindingResult);
+        }
         UserDto userDto = authService.loginUser(request, bindingResult);
 
         return AuthUserResponse.of(userDto);
