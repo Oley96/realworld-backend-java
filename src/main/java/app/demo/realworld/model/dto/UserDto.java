@@ -10,6 +10,6 @@ public record UserDto(String email, String token, String username, String bio, S
 
     public static UserDto of(User user, String token) {
         token = token.replace(TOKEN_PREFIX, "");
-        return new UserDto(user.getEmail(), token, user.getUserName(), user.getBio(), user.getImageUrl());
+        return new UserDto(user.getEmail(), token, user.getNickname(), user.getBio(), user.getImageUrl());
     }
 }

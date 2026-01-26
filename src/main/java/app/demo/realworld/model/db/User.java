@@ -13,7 +13,6 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
-//@Data
 @Entity
 @Table(name = "\"user\"")
 @Data
@@ -50,13 +49,13 @@ public class User implements UserDetails {
         return List.of();
     }
 
-    public String getUserName() {
+    public String getNickname() {
         return username;
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return email; // login identifier
     }
 
     @Override
@@ -78,6 +77,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
 }

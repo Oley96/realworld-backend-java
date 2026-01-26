@@ -1,7 +1,19 @@
 package app.demo.realworld.model.db;
 
-import app.demo.realworld.model.request.CreateArticleRequest;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import java.time.Instant;
+import java.util.LinkedList;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,11 +21,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.Instant;
-import java.util.LinkedList;
-import java.util.List;
-
-//@Data
 @Getter
 @Setter
 @Entity
@@ -47,14 +54,13 @@ public class Article {
     @JoinTable(name = "article_tag",
             joinColumns = {@JoinColumn(name = "article_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")})
-//    @OrderBy("name")
     private List<Tag> tags = new LinkedList<>();
 
-    public static Article of(CreateArticleRequest request, Long authorId) {
+    public static Article of(String body, String description, String title, Long authorId) {
         Article article = new Article();
-        article.setBody(request.body());
-        article.setDescription(request.description());
-        article.setTitle(request.title());
+        article.setBody(body);
+        article.setDescription(description);
+        article.setTitle(title);
         article.setAuthorId(authorId);
         return article;
     }

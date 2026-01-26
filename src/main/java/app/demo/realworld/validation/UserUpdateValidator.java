@@ -50,7 +50,7 @@ public class UserUpdateValidator implements Validator {
                     }
                     return true;
                 })
-                .filter(username -> !username.equals(currentUser.getUserName()))
+                .filter(username -> !username.equals(currentUser.getNickname()))
                 .flatMap(userRepository::findByUsername)
                 .ifPresent(user -> errors.rejectValue("username", null, "username is already taken"));
 
