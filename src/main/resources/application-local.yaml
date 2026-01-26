@@ -5,7 +5,7 @@ spring:
   datasource:
     password: ${DB_PASSWORD:postgres}
     username: ${DB_USERNAME:postgres}
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5437}/${DB_NAME:realworldapp}?connectTimeout=5000&amp;socketTimeout=30000
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5436}/${DB_NAME:realworldapp}?connectTimeout=5000&amp;socketTimeout=30000
     hikari:
       maximum-pool-size: 5
       pool-name: pool
@@ -18,3 +18,7 @@ spring:
 image:
   default:
     url: http://localhost:${server.port}/default.jpg
+
+jwt:
+  secret: ${JWT_SECRET_KEY:671491AE98362741F722202EED3288E8FF2508B35315ADBF75EEB3195A926B40}
+  audience: ${JWT_SECRET_AUDIENCE:API}

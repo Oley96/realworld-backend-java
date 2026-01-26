@@ -1,5 +1,10 @@
 package app.demo.realworld.service;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
+
 import app.demo.realworld.exception.AccessDeniedException;
 import app.demo.realworld.exception.EntityNotFoundException;
 import app.demo.realworld.model.db.Article;
@@ -15,18 +20,15 @@ import app.demo.realworld.model.request.UpdateArticleRequest;
 import app.demo.realworld.repository.ArticleRepository;
 import app.demo.realworld.repository.FavoriteArticleRepository;
 import app.demo.realworld.utils.SlugUtil;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import static java.util.stream.Collectors.*;
 
 @Service
 @AllArgsConstructor
@@ -64,7 +66,7 @@ public class ArticleService {
     }
 
     public ArticleDto createArticle(CreateArticleRequest request, User user) {
-        Article article = Article.of(request, user.getId());
+        Article article = Article.of(request.body(), request.description(), request.title(), user.getId());
         article.setSlug(SlugUtil.slugifyWithUniquePart(article.getTitle()));
 
         List<Tag> tags = tagService.handleTags(request.tagList());
